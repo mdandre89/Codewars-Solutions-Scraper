@@ -22,6 +22,7 @@ language_map = {
     "vb": "vb"
     }
 
+DRIVERFOLDER = os.getenv('DRIVERFOLDER')
 
 codewars_username = sys.argv[1:][0]
 github_username = sys.argv[1:][1]
@@ -58,7 +59,9 @@ chrome_options.add_argument("--headless") # Ensure GUI is off
 chrome_options.add_argument("--no-sandbox")
 
 # Set path to chromedriver as per your configuration
-webdriver_service = Service(os.path.abspath(os.getcwd())+"/scraper/chromedriver/stable/chromedriver")
+driver_folder= os.path.abspath(os.getcwd())+"/../chromedriver/stable/chromedriver" if DRIVERFOLDER else os.path.abspath(os.getcwd())+"/codewars_scraper/chromedriver/stable/chromedriver"
+print("driver_folder", driver_folder)
+webdriver_service = Service(driver_folder)
 browser = webdriver.Chrome(service=webdriver_service, options=chrome_options)
 
 # login
@@ -74,7 +77,7 @@ if not os.path.isdir(directory):
 
 for kata in new_data:
     for language in kata['completedLanguages']:
-        if i.get('slug', None):
+        if kata.get('slug', None):
             id = kata['id']
             slug = kata['slug']
             parent_dir = os.path.abspath(os.getcwd())
@@ -104,10 +107,11 @@ for kata in new_data:
                 print("no solutionCode")
 
             try:
-                file = open(complete_file_name, "w")
-                # file.write(URL.replace("/me/newest", "") + "\n")
-                file.write(solutionCode)
-                file.close()
+                if solutionCode:
+                    file = open(complete_file_name, "w")
+                    # file.write(URL.replace("/me/newest", "") + "\n")
+                    file.write(solutionCode)
+                    file.close()
             except:
                 print("not able to write" + complete_file_name)
 
