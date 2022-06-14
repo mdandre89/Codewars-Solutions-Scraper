@@ -32,7 +32,8 @@ everything being pulled automatically. Below is the ordered list of steps you mu
 1. Click on the green button "Use this template".
 2. Choose a name for your repository, mark the "Private" option and click on "Create repository from template".
 3. [Clone](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) or [add remotely](https://docs.github.com/en/get-started/getting-started-with-git/managing-remote-repositories) to pull the new repository locally in your machine.
-4. Move to the `codewars_scraper` folder.
+4. Move to the `
+Codewars-Solutions-Scraper` folder.
 5. Run the program by writing `python3 main.py YOUR_CODEWARS_USERNAME YOUR_GITHUB_USERNAME YOUR_GITHUB_PASSWORD` in your command line.
 6. Wait for the program to complete (you'll see a message that indicates the completion status).
 7. Add all the files to the stage, commit them and push them to your private repository.
@@ -40,16 +41,16 @@ everything being pulled automatically. Below is the ordered list of steps you mu
 
 ### Docker
 
-Docker implementation is still a work in progress.
+The Docker implementation is still a work in progress.
 
-To build:
-docker build  --no-cache -t codewars_scraper .
+Markup : * To build: docker build  --no-cache -t 
+Codewars-Solutions-Scraper .
 
-To run:
-docker run -it codewars_scraper YOUR_CODEWARS_USERNAME YOUR_GITHUB_USERNAME YOUR_GITHUB_PASSWORD
+Markup : * To run: docker run -it 
+Codewars-Solutions-Scraper YOUR_CODEWARS_USERNAME YOUR_GITHUB_USERNAME YOUR_GITHUB_PASSWORD
 
-To debug:
-docker run -it --entrypoint sh codewars_scraper 
+Markup : * To debug: docker run -it --entrypoint sh 
+Codewars-Solutions-Scraper 
 
 
 ## Disclaimer
