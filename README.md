@@ -23,6 +23,7 @@ To use this program you need:
 - Python3.7+
 - A Codewars account.
 - A GitHub account.
+- Google Chrome 102.0.5005.115+(or compatible with chromedriver 102.0.5005.61)
 
 ### All-in-one method
 
@@ -43,11 +44,11 @@ Codewars-Solutions-Scraper` folder.
 
 The Docker implementation is still a work in progress.
 
- - To build: docker build --no-cache -t Codewars-Solutions-Scraper .
+ - To build: `docker build --no-cache -t Codewars-Solutions-Scraper .`
 
- - To run: docker run -it Codewars-Solutions-Scraper YOUR_CODEWARS_USERNAME YOUR_GITHUB_USERNAME YOUR_GITHUB_PASSWORD
+ - To run: `docker run -it Codewars-Solutions-Scraper YOUR_CODEWARS_USERNAME YOUR_GITHUB_USERNAME YOUR_GITHUB_PASSWORD`
 
- - To debug: docker run -it --entrypoint sh Codewars-Solutions-Scraper 
+ - To debug: `docker run -it --entrypoint sh Codewars-Solutions-Scraper`
 
 
 ## Disclaimer
