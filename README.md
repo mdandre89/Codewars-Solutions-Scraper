@@ -23,7 +23,7 @@ To use this program you need:
 - Python3.7+
 - A Codewars account.
 - A GitHub account.
-- Google Chrome 102.0.5005.115+(or compatible with chromedriver 102.0.5005.61)
+- Google Chrome 102.0.5005.115+(or any version [compatible](https://sites.google.com/a/chromium.org/chromedriver/downloads/version-selection) with chromedriver 102.0.5005.61)
 
 ### All-in-one method
 
