@@ -106,45 +106,35 @@ for kata in new_data:
             solutionCode = ""
             try:
                 solutionsList = browser.find_element(By.ID, "solutions_list");
-            except:
-                print("no solutionsList")
-
-            try:
                 solutionItem = solutionsList.find_element(By.TAG_NAME, "li");
-            except:
-                print("no solutionItem")
-
-            try:
                 solutionCode = solutionItem.find_element(By.TAG_NAME, "pre").text;
             except:
-                print("no solutionCode")
+                print("Error while scraping solutions, No DOM elements found.\n")
 
             try:
-                file1 = open(complete_readme_path, "w")
-                file1.write('# '+kata.get('name', 'no name found') + "\n\n")
-                file1.write('Markup : * URL:'+ '[' + f'https://www.codewars.com/kata/{id}' + '](' + f'https://www.codewars.com/kata/{id}' + ')' + "\n")
-                file1.write('Markup : * Id: '+ id + "\n")
-                file1.write('Markup : * Language: '+ language + "\n")
-                file1.write('Markup : * Completed om: '+kata.get('completedAt', 'no name found')+ "\n")
-                file1.close()
+                with open(complete_readme_path, 'w') as readme:
+                    readme.write('# '+kata.get('name', 'no name found') + "\n\n")
+                    readme.write(' - URL:'+ '[' + f'https://www.codewars.com/kata/{id}' + '](' + f'https://www.codewars.com/kata/{id}' + ')' + "\n")
+                    readme.write(' - Id: '+ id + "\n")
+                    readme.write(' - Language: '+ language + "\n")
+                    readme.write(' - Completed on: '+kata.get('completedAt', 'no name found')+ "\n")
             except:
-                print("not able to write Readme for" + complete_readme_path)
+                print("Not able to write Readme for" + complete_readme_path + "\n")
 
             try:
                 if solutionCode:
-                    file = open(complete_file_path, "w")
-                    file.write(solutionCode)
-                    file.close()
-                    print(f"Solution to {slug} downloaded \n")
+                    with open(complete_file_path, "w") as solution_file:
+                        solution_file.write(solutionCode)
+                    print(f"Solution to {slug} downloaded.\n")
                 else:
                     not_downloaded.append(slug)
             except:
                 errors.append(slug)
                 not_downloaded.append(slug)
-                print("not able to write" + complete_file_path + " \n")
+                print("Not able to write" + complete_file_path + " \n")
 
             number_of_solutions-=1
-            print(f"{number_of_solutions} Solutions left to be downloaded\n")
+            print(f"{number_of_solutions} Solutions left to be downloaded.\n")
 
 
 print("All the solutions have been retrieved\n")
