@@ -22,6 +22,13 @@ language_map = {
     "vb": "vb"
     }
 
+def create_folder(name):
+    parent_dir = os.path.abspath(os.getcwd())
+    path = os.path.join(parent_dir, name)
+    if not os.path.isdir(path):
+        os.mkdir(path)
+        print("Directory '% s' created" % name)
+
 DRIVERFOLDER = os.getenv('DRIVERFOLDER')
 
 codewars_username = sys.argv[1:][0]
@@ -42,16 +49,24 @@ def sign_codewars( driver, githubUsername, github_pwd):
             time.sleep(3)
             # it logins authomatically if receving a 6 digit number
             driver.find_element(By.ID, "otp").send_keys(otp_code) 
-        print("jhelp")
+        print("Logged in\n")
     except:
-        print("cannot navigate")
+        print("Cannot Login\n")
         sys.exit(0)
 
 # getting the completed katas
+errors = []
 new_data = []
-for i in range(20):
+not_downloaded = []
+for i in range(10):
     URL = f'https://www.codewars.com/api/v1/users/{codewars_username}/code-challenges/completed?page='+str(i)
     new_data += requests.get(URL).json()['data']
+
+number_of_solutions=0
+for kata in new_data:
+    for language in kata['completedLanguages']:
+        number_of_solutions+=1
+print(f"{number_of_solutions} Solutions to be downloaded\n")
 
 ## Setup chrome options
 chrome_options = Options()
@@ -59,7 +74,7 @@ chrome_options.add_argument("--headless") # Ensure GUI is off
 chrome_options.add_argument("--no-sandbox")
 
 # Set path to chromedriver as per your configuration
-driver_folder= os.path.abspath(os.getcwd())+"/../chromedriver/stable/chromedriver" if DRIVERFOLDER else os.path.abspath(os.getcwd())+"/codewars_scraper/chromedriver/stable/chromedriver"
+driver_folder= os.path.abspath(os.getcwd())+"/../chromedriver/stable/chromedriver" if DRIVERFOLDER else os.path.abspath(os.getcwd())+"/chromedriver/stable/chromedriver"
 print("driver_folder", driver_folder)
 webdriver_service = Service(driver_folder)
 browser = webdriver.Chrome(service=webdriver_service, options=chrome_options)
@@ -68,12 +83,8 @@ browser = webdriver.Chrome(service=webdriver_service, options=chrome_options)
 sign_codewars(browser, github_username, github_pwd)
 
 # Directory Creation
-directory = "Completed"
-parent_dir = os.path.abspath(os.getcwd())
-path = os.path.join(parent_dir, directory)
-if not os.path.isdir(directory):
-    os.mkdir(path)
-    print("Directory '% s' created" % directory)
+directory = "completed"
+create_folder(directory)
 
 for kata in new_data:
     for language in kata['completedLanguages']:
@@ -81,9 +92,12 @@ for kata in new_data:
             id = kata['id']
             slug = kata['slug']
             parent_dir = os.path.abspath(os.getcwd())
-            save_path = os.path.join(parent_dir, directory)
+            create_folder(os.path.join(directory, slug))
             file_name = slug + "." + language_map.get(language, 'errorlanguage')
-            complete_file_name = os.path.join(save_path, file_name)
+
+            save_path = os.path.join(parent_dir, os.path.join(directory, slug))
+            complete_file_path = os.path.join(save_path, file_name)
+            complete_readme_path = os.path.join(save_path, 'README.md')
 
             URL = f'https://www.codewars.com/kata/{id}/solutions/{language}/me/newest'
             browser.get(URL)
@@ -102,19 +116,40 @@ for kata in new_data:
 
             try:
                 solutionCode = solutionItem.find_element(By.TAG_NAME, "pre").text;
-                print(solutionCode)
             except:
                 print("no solutionCode")
 
             try:
+                file1 = open(complete_readme_path, "w")
+                file1.write('# '+kata.get('name', 'no name found') + "\n\n")
+                file1.write('Markup : * URL:'+ '[' + f'https://www.codewars.com/kata/{id}' + '](' + f'https://www.codewars.com/kata/{id}' + ')' + "\n")
+                file1.write('Markup : * Id: '+ id + "\n")
+                file1.write('Markup : * Language: '+ language + "\n")
+                file1.write('Markup : * Completed om: '+kata.get('completedAt', 'no name found')+ "\n")
+                file1.close()
+            except:
+                print("not able to write Readme for" + complete_readme_path)
+
+            try:
                 if solutionCode:
-                    file = open(complete_file_name, "w")
-                    # file.write(URL.replace("/me/newest", "") + "\n")
+                    file = open(complete_file_path, "w")
                     file.write(solutionCode)
                     file.close()
+                    print(f"Solution to {slug} downloaded \n")
+                else:
+                    not_downloaded.append(slug)
             except:
-                print("not able to write" + complete_file_name)
+                errors.append(slug)
+                not_downloaded.append(slug)
+                print("not able to write" + complete_file_path + " \n")
 
+            number_of_solutions-=1
+            print(f"{number_of_solutions} Solutions left to be downloaded\n")
+
+
+print("All the solutions have been retrieved\n")
+print('These were the errors\n', errors)
+print('These are the katas not downloaded\n', not_downloaded)
 
 time.sleep(10)
 browser.quit()
