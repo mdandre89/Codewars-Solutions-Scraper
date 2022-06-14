@@ -43,14 +43,11 @@ Codewars-Solutions-Scraper` folder.
 
 The Docker implementation is still a work in progress.
 
-Markup : * To build: docker build  --no-cache -t 
-Codewars-Solutions-Scraper .
+ - To build: docker build --no-cache -t Codewars-Solutions-Scraper .
 
-Markup : * To run: docker run -it 
-Codewars-Solutions-Scraper YOUR_CODEWARS_USERNAME YOUR_GITHUB_USERNAME YOUR_GITHUB_PASSWORD
+ - To run: docker run -it Codewars-Solutions-Scraper YOUR_CODEWARS_USERNAME YOUR_GITHUB_USERNAME YOUR_GITHUB_PASSWORD
 
-Markup : * To debug: docker run -it --entrypoint sh 
-Codewars-Solutions-Scraper 
+ - To debug: docker run -it --entrypoint sh Codewars-Solutions-Scraper 
 
 
 ## Disclaimer
