@@ -58,7 +58,4 @@ This repository is under the [BSD-2-Clause License](LICENSE) to follow
 on October, 2018).
 
 If you've read above sections, you know you can customise the program to make it work as you want. Keep in
-mind that **I offer the program as you see in this repository**. Any changes you made in your private repository
-are up to you, and I'm not responsible for them. Be careful on what you change. For more related information,
-please read the ["Privacy" page](https://github.com/JoseDeFreitas/CodewarsGitHubLogger/wiki/Privacy) of the
-wiki. I encourage you to read the whole wiki, too.
+mind that **I offer the program as you see in this repository**. Any changes you made in your private repository are up to you, and I'm not responsible for them. Be careful on what you change.
