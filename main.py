@@ -99,6 +99,15 @@ for kata in new_data:
             complete_file_path = os.path.join(save_path, file_name)
             complete_readme_path = os.path.join(save_path, 'README.md')
 
+            kata_info = {}
+            try:
+                URL_description = f'https://www.codewars.com/api/v1/code-challenges/{id}'
+                kata_info = requests.get(URL_description, timeout=2).json()
+            except:
+                message = f'Error while retrieving kata info for {id}.\n'
+                print(message)
+                errors.append(message)
+
             URL = f'https://www.codewars.com/kata/{id}/solutions/{language}/me/newest'
             browser.get(URL)
             time.sleep(10)
@@ -109,7 +118,9 @@ for kata in new_data:
                 solutionItem = solutionsList.find_element(By.TAG_NAME, "li");
                 solutionCode = solutionItem.find_element(By.TAG_NAME, "pre").text;
             except:
-                print("Error while scraping solutions, No DOM elements found.\n")
+                message = f'Error while scraping solutions for {id}, No DOM elements found.\n'
+                print(message)
+                errors.append(message)
 
             try:
                 with open(complete_readme_path, 'w') as readme:
@@ -118,8 +129,12 @@ for kata in new_data:
                     readme.write(' - Id: '+ id + "\n")
                     readme.write(' - Language: '+ language + "\n")
                     readme.write(' - Completed on: '+kata.get('completedAt', 'no name found')+ "\n")
+                    readme.write(' - Tags: ' + ','.join(kata_info.get('tags',[])) + "\n")
+                    readme.write(' - Description:\n' + kata_info.get('description', 'N\A') + "\n")
             except:
-                print("Not able to write Readme for" + complete_readme_path + "\n")
+                message = "Not able to write Readme for" + complete_readme_path + "\n"
+                print(message)
+                errors.append(message)
 
             try:
                 if solutionCode:
